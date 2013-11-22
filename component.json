@@ -1,0 +1,24 @@
+{
+    "name": "router",
+    "description": "Stateful router",
+    "version": "0.0.0",
+
+    "dependencies": {
+        "component/escape-regexp": "*",
+        "paulmillr/es6-shim": "*"
+    },
+
+    "development": {
+        "component/assert": "*",
+        "jkroso/equals": "*"
+    },
+
+    "scripts": [
+        "index.js",
+        "lib/matcher.js",
+        "lib/segment.js",
+        "lib/state.js"
+    ],
+
+    "main": "index.js"
+}
