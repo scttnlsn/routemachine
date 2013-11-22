@@ -1,0 +1,16 @@
+{
+    "name": "router",
+    "version": "0.0.0",
+
+    "scripts": {
+        "test": "./node_modules/.bin/mocha"
+    },
+
+    "dependencies": {
+        "escape-regexp-component": "1.0.2"
+    },
+
+    "devDependencies": {
+        "mocha": "1.14.0"
+    }
+}

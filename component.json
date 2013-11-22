@@ -7,11 +7,6 @@
         "component/escape-regexp": "*"
     },
 
-    "development": {
-        "component/assert": "*",
-        "jkroso/equals": "*"
-    },
-
     "scripts": [
         "index.js",
         "lib/matcher.js",

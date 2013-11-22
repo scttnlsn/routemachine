@@ -1,6 +1,5 @@
 var assert = require('assert');
-var equals = require('equals');
-var Matcher = require('router/lib/matcher');
+var Matcher = require('../lib/matcher');
 
 describe('Matcher', function () {
     beforeEach(function () {
@@ -12,7 +11,7 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/foo/bar', handler: h }]);
 
         var params = this.matcher.match('/foo/bar');
-        assert(equals(params, [{ handler: h, params: {} }]));
+        assert.deepEqual(params, [{ handler: h, params: {} }]);
         assert(this.matcher.match('/foo/baz') === null);
     });
 
@@ -21,7 +20,7 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/foo/:bar', handler: h }]);
 
         var match = this.matcher.match('/foo/123');
-        assert(equals(match, [{ handler: h, params: { bar: '123' }}]));
+        assert.deepEqual(match, [{ handler: h, params: { bar: '123' }}]);
         assert(this.matcher.match('/bar') === null);
     });
 
@@ -30,7 +29,7 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/foo/*bar', handler: h }]);
 
         var match = this.matcher.match('/foo/1/2/3');
-        assert(equals(match, [{ handler: h, params: { bar: '1/2/3' }}]));
+        assert.deepEqual(match, [{ handler: h, params: { bar: '1/2/3' }}]);
     });
 
     it('matches against multiple routes', function () {
@@ -40,9 +39,9 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/baz/:qux', handler: h[1] }]);
 
         var m1 = this.matcher.match('/foo/123');
-        assert(equals(m1, [{ handler: h[0], params: { bar: '123' }}]));
+        assert.deepEqual(m1, [{ handler: h[0], params: { bar: '123' }}]);
         var m2 = this.matcher.match('/baz/456');
-        assert(equals(m2, [{ handler: h[1], params: { qux: '456' }}]));
+        assert.deepEqual(m2, [{ handler: h[1], params: { qux: '456' }}]);
     });
 
     it('matches overlapping routes', function () {
@@ -52,9 +51,9 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/foo/bar/:baz', handler: h[1] }]);
 
         var m1 = this.matcher.match('/foo/123');
-        assert(equals(m1, [{ handler: h[0], params: { bar: '123' }}]));
+        assert.deepEqual(m1, [{ handler: h[0], params: { bar: '123' }}]);
         var m2 = this.matcher.match('/foo/bar/456');
-        assert(equals(m2, [{ handler: h[1], params: { baz: '456' }}]));
+        assert.deepEqual(m2, [{ handler: h[1], params: { baz: '456' }}]);
     });
 
     it('matches nested routes', function () {
@@ -66,10 +65,10 @@ describe('Matcher', function () {
         ]);
 
         var match = this.matcher.match('/foo/123/baz/456');
-        assert(equals(match, [
+        assert.deepEqual(match, [
             { handler: h[0], params: { bar: '123' } },
             { handler: h[1], params: { qux: '456' } }
-        ]));
+        ]);
     });
 
     it('matches empty routes', function () {
@@ -88,18 +87,18 @@ describe('Matcher', function () {
         ]);
 
         var m1 = this.matcher.match('/foo/bar');
-        assert(equals(m1, [
+        assert.deepEqual(m1, [
             { handler: h[0], params: {} },
             { handler: h[1], params: {} },
             { handler: h[2], params: {} }
-        ]));
+        ]);
 
         var m2 = this.matcher.match('/foo/baz');
-        assert(equals(m2, [
+        assert.deepEqual(m2, [
             { handler: h[0], params: {} },
             { handler: h[1], params: {} },
             { handler: h[3], params: { bar: 'baz' }}
-        ]));
+        ]);
     });
 
     it('gives preference to routes with fewer dynamic segments', function () {
@@ -109,9 +108,9 @@ describe('Matcher', function () {
         this.matcher.add([{ path: '/foo/bar', handler: h[1] }]);
 
         var m1 = this.matcher.match('/foo/bar');
-        assert(equals(m1, [{ handler: h[1], params: {}}]));
+        assert.deepEqual(m1, [{ handler: h[1], params: {}}]);
         var m2 = this.matcher.match('/foo/baz');
-        assert(equals(m2, [{ handler: h[0], params: { bar: 'baz' }}]));
+        assert.deepEqual(m2, [{ handler: h[0], params: { bar: 'baz' }}]);
     });
 
     describe('', function () {
@@ -131,13 +130,13 @@ describe('Matcher', function () {
 
         it('returns handlers for named routes', function () {
             var h1 = this.matcher.handlers('a');
-            assert(equals(h1, [{ handler: this.h[0], names: [] }]));
+            assert.deepEqual(h1, [{ handler: this.h[0], names: [] }]);
 
             var h2 = this.matcher.handlers('b');
-            assert(equals(h2, [{ handler: this.h[1], names: ['bar'] }]));
+            assert.deepEqual(h2, [{ handler: this.h[1], names: ['bar'] }]);
 
             var h3 = this.matcher.handlers('c');
-            assert(equals(h3, [{ handler: this.h[0], names: [] }, { handler: this.h[2], names: [] }]));
+            assert.deepEqual(h3, [{ handler: this.h[0], names: [] }, { handler: this.h[2], names: [] }]);
         });
     });
 });

@@ -1,4 +1,5 @@
-var Router = require('router/lib/router');
+var assert = require('assert');
+var Router = require('../lib/router');
 
 describe('Router', function () {
     beforeEach(function () {
@@ -14,9 +15,9 @@ describe('Router', function () {
         });
 
         var m1 = this.router.match('/foo');
-        assert(equals(m1, [{ handler: h[0], params: {}}]));
+        assert.deepEqual(m1, [{ handler: h[0], params: {}}]);
         var m2 = this.router.match('/foo/123');
-        assert(equals(m2, [{ handler: h[1], params: { bar: '123' }}]));
+        assert.deepEqual(m2, [{ handler: h[1], params: { bar: '123' }}]);
     });
 
     it('matches nested routes', function () {
@@ -30,9 +31,9 @@ describe('Router', function () {
         });
 
         var m1 = this.router.match('/foo');
-        assert(equals(m1, [{ handler: h[0], params: {}}]));
+        assert.deepEqual(m1, [{ handler: h[0], params: {}}]);
         var m2 = this.router.match('/foo/123');
-        assert(equals(m2, [{ handler: h[1], params: { bar: '123' }}]));
+        assert.deepEqual(m2, [{ handler: h[1], params: { bar: '123' }}]);
     });
 
     it('matches nested handlers', function () {
@@ -50,28 +51,28 @@ describe('Router', function () {
         });
 
         var m1 = this.router.match('/foo');
-        assert(equals(m1, [
+        assert.deepEqual(m1, [
             { handler: h[0], params: {}}
-        ]));
+        ]);
 
         var m2 = this.router.match('/foo/bar');
-        assert(equals(m2, [
+        assert.deepEqual(m2, [
             { handler: h[0], params: {}},
             { handler: h[1], params: {}},
             { handler: h[3], params: {}}
-        ]));
+        ]);
 
         var m3 = this.router.match('/foo/123');
-        assert(equals(m3, [
+        assert.deepEqual(m3, [
             { handler: h[0], params: {}},
             { handler: h[2], params: { bar: '123' }}
-        ]));
+        ]);
 
         var m4 = this.router.match('/foo/bar/456');
-        assert(equals(m4, [
+        assert.deepEqual(m4, [
             { handler: h[0], params: {}},
             { handler: h[1], params: {}},
             { handler: h[4], params: { baz: '456' }}
-        ]));
+        ]);
     });
 });
