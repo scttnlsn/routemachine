@@ -4,8 +4,7 @@
     "version": "0.0.0",
 
     "dependencies": {
-        "component/escape-regexp": "*",
-        "paulmillr/es6-shim": "*"
+        "component/escape-regexp": "*"
     },
 
     "development": {
