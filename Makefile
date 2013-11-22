@@ -7,4 +7,7 @@ components: component.json
 clean:
 	rm -rf build components
 
+serve:
+	@serve --exec make
+
 .PHONY: clean
