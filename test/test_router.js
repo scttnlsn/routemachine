@@ -166,7 +166,39 @@ describe('Router', function () {
 
             this.router.navigate('/a');
             this.router.navigate('/b');
-        })
+        });
+
+        it('executes handler functions in same context', function () {
+            var check = function () {
+                assert.equal(this.foo, 'bar');
+            };
+
+            var h1 = {
+                enter: function () {
+                    this.foo = 'bar';
+                },
+                exec: check,
+                exit: check
+            };
+
+            var h2 = {
+                enter: check,
+                exec: check,
+                exit: check
+            };
+
+            this.router.define(function (route) {
+                route('/a').to(h1, function (route) {
+                    route('/b').to(h2);
+                });
+
+                route('/c').to(handler());
+            });
+
+            this.router.navigate('/a');
+            this.router.navigate('/a/b');
+            this.router.navigate('/c');
+        });
     });
 });
 
