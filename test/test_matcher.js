@@ -12,7 +12,7 @@ describe('Matcher', function () {
 
         var params = this.matcher.match('/foo/bar');
         assert.deepEqual(params, [{ handler: h, params: {} }]);
-        assert(this.matcher.match('/foo/baz') === null);
+        assert.equal(this.matcher.match('/foo/baz'), null);
     });
 
     it('matches dynamic routes', function () {
@@ -21,7 +21,7 @@ describe('Matcher', function () {
 
         var match = this.matcher.match('/foo/123');
         assert.deepEqual(match, [{ handler: h, params: { bar: '123' }}]);
-        assert(this.matcher.match('/bar') === null);
+        assert.equal(this.matcher.match('/bar'), null);
     });
 
     it('matches wildcard routes', function () {
@@ -123,9 +123,9 @@ describe('Matcher', function () {
         });
 
         it('returns paths for named routes', function () {
-            assert(this.matcher.generate('a') === '/foo');
-            assert(this.matcher.generate('b', { bar: '123' }) === '/foo/123');
-            assert(this.matcher.generate('c') === '/foo/bar');
+            assert.equal(this.matcher.generate('a'), '/foo');
+            assert.equal(this.matcher.generate('b', { bar: '123' }), '/foo/123');
+            assert.equal(this.matcher.generate('c'), '/foo/bar');
         });
 
         it('returns handlers for named routes', function () {
