@@ -168,23 +168,30 @@ describe('Router', function () {
             this.router.navigate('/b');
         });
 
-        it('executes handler functions in same context', function () {
-            var check = function () {
-                assert.equal(this.foo, 'bar');
-            };
-
+        it('executes handler functions in hierarchical context', function () {
             var h1 = {
                 enter: function () {
                     this.foo = 'bar';
                 },
-                exec: check,
-                exit: check
+                exec: function () {
+                    assert.equal(this.foo, 'bar');
+                },
+                exit: function () {
+                    assert.equal(this.foo, 'bar');
+                }
             };
 
             var h2 = {
-                enter: check,
-                exec: check,
-                exit: check
+                enter: function () {
+                    assert.equal(this.foo, 'bar');
+                    this.foo = 'baz';
+                },
+                exec: function () {
+                    assert.equal(this.foo, 'baz');
+                },
+                exit: function () {
+                    assert.equal(this.foo, 'baz');
+                }
             };
 
             this.router.define(function (route) {
