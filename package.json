@@ -7,6 +7,7 @@
     },
 
     "dependencies": {
+        "async": "0.2.9",
         "escape-regexp-component": "1.0.2"
     },
 

@@ -130,6 +130,23 @@ describe('Router', function () {
             assert.equal(this.h[0].exit.callCount, 1);
             assert.equal(this.h[3].enter.callCount, 1);
         });
+
+        it('handles aync enter functions', function (done) {
+            var h = {
+                enter: function (callback) {
+                    callback();
+                },
+                exec: function () {
+                    done();
+                }
+            };
+
+            this.router.define(function (route) {
+                route('/a').to(h);
+            });
+
+            this.router.navigate('/a');
+        });
     });
 });
 
