@@ -79,17 +79,15 @@ describe('Router', function () {
 
     describe('#navigate', function () {
         beforeEach(function () {
-            var h = this.h = [
-                { exec: sinon.spy() },
-                { exec: sinon.spy() },
-                { exec: sinon.spy() }
-            ];
+            var h = this.h = [handler(), handler(), handler(), handler()];
 
             this.router.define(function (route) {
                 route('/foo').to(h[0], function (route) {
                     route('/:bar').to(h[1]);
                     route('/bar').to(h[2]);
                 });
+
+                route('/qux').to(h[3]);
             });
         });
 
@@ -102,16 +100,46 @@ describe('Router', function () {
             assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
         });
 
+        it('calls enter on each handler entered', function () {
+            this.router.navigate('/foo/123');
+
+            assert.ok(this.h[0].enter.calledOnce);
+            assert.ok(this.h[1].enter.calledOnce);
+        });
+
         it('does not call shared handlers more than once', function () {
             this.router.navigate('/foo/123');
             this.router.navigate('/foo/bar');
 
+            assert.equal(this.h[0].enter.callCount, 1);
             assert.equal(this.h[0].exec.callCount, 1);
             assert.deepEqual(this.h[0].exec.getCall(0).args[0], {});
+            assert.equal(this.h[1].enter.callCount, 1);
             assert.equal(this.h[1].exec.callCount, 1);
             assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
+            assert.equal(this.h[2].enter.callCount, 1);
             assert.equal(this.h[2].exec.callCount, 1);
             assert.deepEqual(this.h[2].exec.getCall(0).args[0], {});
         });
+
+        it('calls exit on unshared handlers', function () {
+            this.router.navigate('/foo/123');
+            this.router.navigate('/qux');
+
+            assert.equal(this.h[1].exit.callCount, 1);
+            assert.equal(this.h[0].exit.callCount, 1);
+            assert.equal(this.h[3].enter.callCount, 1);
+        });
     });
 });
+
+// Helpers
+// ---------------
+
+function handler() {
+    return {
+        enter: sinon.spy(),
+        exec: sinon.spy(),
+        exit: sinon.spy()
+    };
+}
