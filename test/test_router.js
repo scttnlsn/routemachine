@@ -147,6 +147,26 @@ describe('Router', function () {
 
             this.router.navigate('/a');
         });
+
+        it('handles async exit functions', function (done) {
+            var h1 = {
+                enter: function () {},
+                exec: function () {},
+                exit: function (callback) { callback(); }
+            };
+
+            var h2 = {
+                exec: function () { done(); }
+            };
+
+            this.router.define(function (route) {
+                route('/a').to(h1);
+                route('/b').to(h2);
+            });
+
+            this.router.navigate('/a');
+            this.router.navigate('/b');
+        })
     });
 });
 
