@@ -1,4 +1,5 @@
 var assert = require('assert');
+var sinon = require('sinon');
 var Router = require('../lib/router');
 
 describe('Router', function () {
@@ -74,5 +75,43 @@ describe('Router', function () {
             { handler: h[1], params: {}},
             { handler: h[4], params: { baz: '456' }}
         ]);
+    });
+
+    describe('#navigate', function () {
+        beforeEach(function () {
+            var h = this.h = [
+                { exec: sinon.spy() },
+                { exec: sinon.spy() },
+                { exec: sinon.spy() }
+            ];
+
+            this.router.define(function (route) {
+                route('/foo').to(h[0], function (route) {
+                    route('/:bar').to(h[1]);
+                    route('/bar').to(h[2]);
+                });
+            });
+        });
+
+        it('calls matching handlers', function () {
+            this.router.navigate('/foo/123');
+
+            assert.ok(this.h[0].exec.calledOnce);
+            assert.deepEqual(this.h[0].exec.getCall(0).args[0], {});
+            assert.ok(this.h[1].exec.calledOnce);
+            assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
+        });
+
+        it('does not call shared handlers more than once', function () {
+            this.router.navigate('/foo/123');
+            this.router.navigate('/foo/bar');
+
+            assert.equal(this.h[0].exec.callCount, 1);
+            assert.deepEqual(this.h[0].exec.getCall(0).args[0], {});
+            assert.equal(this.h[1].exec.callCount, 1);
+            assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
+            assert.equal(this.h[2].exec.callCount, 1);
+            assert.deepEqual(this.h[2].exec.getCall(0).args[0], {});
+        });
     });
 });
