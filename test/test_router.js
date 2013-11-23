@@ -129,6 +129,7 @@ describe('Router', function () {
             assert.equal(this.h[1].exit.callCount, 1);
             assert.equal(this.h[0].exit.callCount, 1);
             assert.equal(this.h[3].enter.callCount, 1);
+            assert.ok(this.h[1].exit.calledBefore(this.h[0].exit));
         });
 
         it('handles aync enter functions', function (done) {
