@@ -222,6 +222,23 @@ describe('Router', function () {
             assert.equal(h.exit.callCount, 1);
             assert.equal(h.exec.callCount, 2);
         });
+
+        
+        it('enters index state', function () {
+            var h1 = handler();
+            var h2 = handler();
+
+            this.router.define(function (route) {
+                route('/').to(h1, function (route) {
+                    route('/foo').to(h2);
+                });
+            });
+
+            this.router.navigate('/');
+
+            assert.ok(h1.enter.calledOnce);
+            assert.ok(h1.exec.calledOnce);
+        });
     });
 });
 
