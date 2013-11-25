@@ -223,7 +223,7 @@ describe('Router', function () {
             assert.equal(h.exec.callCount, 2);
         });
 
-        
+
         it('enters index state', function () {
             var h1 = handler();
             var h2 = handler();
@@ -238,6 +238,22 @@ describe('Router', function () {
 
             assert.ok(h1.enter.calledOnce);
             assert.ok(h1.exec.calledOnce);
+        });
+
+        it('re-execs current state', function () {
+            var h1 = handler();
+            var h2 = handler();
+
+            this.router.define(function (route) {
+                route('/').to(h1, function (route) {
+                    route('/foo').to(h2);
+                });
+            });
+
+            this.router.navigate('/foo');
+            this.router.navigate('/');
+
+            assert.equal(h1.exec.callCount, 2);
         });
     });
 });
