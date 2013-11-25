@@ -95,9 +95,9 @@ describe('Router', function () {
             this.router.navigate('/foo/123');
 
             assert.ok(this.h[0].exec.calledOnce);
-            assert.deepEqual(this.h[0].exec.getCall(0).args[0], {});
+            assert.deepEqual(this.h[0].exec.firstCall.thisValue.params, {});
             assert.ok(this.h[1].exec.calledOnce);
-            assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
+            assert.deepEqual(this.h[1].exec.firstCall.thisValue.params, { bar: '123' });
         });
 
         it('calls enter on each handler entered', function () {
@@ -113,13 +113,13 @@ describe('Router', function () {
 
             assert.equal(this.h[0].enter.callCount, 1);
             assert.equal(this.h[0].exec.callCount, 1);
-            assert.deepEqual(this.h[0].exec.getCall(0).args[0], {});
+            assert.deepEqual(this.h[0].exec.firstCall.thisValue.params, {});
             assert.equal(this.h[1].enter.callCount, 1);
             assert.equal(this.h[1].exec.callCount, 1);
-            assert.deepEqual(this.h[1].exec.getCall(0).args[0], { bar: '123' });
+            assert.deepEqual(this.h[1].exec.firstCall.thisValue.params, { bar: '123' });
             assert.equal(this.h[2].enter.callCount, 1);
             assert.equal(this.h[2].exec.callCount, 1);
-            assert.deepEqual(this.h[2].exec.getCall(0).args[0], {});
+            assert.deepEqual(this.h[2].exec.firstCall.thisValue.params, {});
         });
 
         it('calls exit on unshared handlers', function () {
