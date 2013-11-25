@@ -255,6 +255,17 @@ describe('Router', function () {
 
             assert.equal(h1.exec.callCount, 2);
         });
+
+        it('ignores trailing slash', function () {
+            var h = handler();
+            this.router.define(function (route) {
+                route('/foo').to(h);
+            });
+
+            this.router.navigate('/foo/');
+
+            assert.ok(h.exec.calledOnce);
+        });
     });
 });
 
