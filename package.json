@@ -8,6 +8,7 @@
 
     "dependencies": {
         "async": "0.2.9",
+        "equals": "0.3.2",
         "escape-regexp-component": "1.0.2"
     },
 

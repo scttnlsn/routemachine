@@ -207,6 +207,21 @@ describe('Router', function () {
             this.router.navigate('/a/b');
             this.router.navigate('/c');
         });
+
+        it('exits and re-enters state when params change', function () {
+            var h = handler();
+
+            this.router.define(function (route) {
+                route('/foo/:bar').to(h);
+            });
+
+            this.router.navigate('/foo/123');
+            this.router.navigate('/foo/456');
+
+            assert.equal(h.enter.callCount, 2);
+            assert.equal(h.exit.callCount, 1);
+            assert.equal(h.exec.callCount, 2);
+        });
     });
 });
 

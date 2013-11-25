@@ -5,7 +5,8 @@
 
     "dependencies": {
         "caolan/async": "*",
-        "component/escape-regexp": "*"
+        "component/escape-regexp": "*",
+        "jkroso/equals": "*"
     },
 
     "scripts": [
