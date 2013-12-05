@@ -266,6 +266,35 @@ describe('Router', function () {
 
             assert.ok(h.exec.calledOnce);
         });
+
+        it('execs intermediate states with flag', function (done) {
+            var h1 = {
+                enter: function () {
+                    assert.ok(this.intermediate);
+                },
+                exec: function () {
+                    assert.ok(this.intermediate);
+                }
+            };
+
+            var h2 = {
+                enter: function () {
+                    assert.ok(!this.intermediate);
+                },
+                exec: function () {
+                    assert.ok(!this.intermediate);
+                    done();
+                }
+            };
+
+            this.router.define(function (route) {
+                route('/').to(h1, function (route) {
+                    route('/foo').to(h2);
+                });
+            });
+
+            this.router.navigate('/foo');
+        });
     });
 });
 
