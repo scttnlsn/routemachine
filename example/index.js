@@ -16,7 +16,7 @@ $(function () {
             },
 
             exec: function () {
-                console.log('Exec:', 'index');
+                console.log('Exec:', 'index', this.intermediate);
                 $('#main').html(templates.index());
             },
 
@@ -36,7 +36,7 @@ $(function () {
             },
 
             exec: function () {
-                console.log('Exec:', 'entries');
+                console.log('Exec:', 'entries', this.intermediate);
                 $('#main').html(templates.entries({ entries: this.entries }));
             },
 
@@ -52,7 +52,7 @@ $(function () {
             },
 
             exec: function () {
-                console.log('Exec:', 'entry', this.params.id);
+                console.log('Exec:', 'entry', this.params.id, this.intermediate);
                 $('#main').html(templates.entry({ entry: this.entry }));
             },
 

@@ -267,25 +267,9 @@ describe('Router', function () {
             assert.ok(h.exec.calledOnce);
         });
 
-        it('execs intermediate states with flag', function (done) {
-            var h1 = {
-                enter: function () {
-                    assert.ok(this.intermediate);
-                },
-                exec: function () {
-                    assert.ok(this.intermediate);
-                }
-            };
-
-            var h2 = {
-                enter: function () {
-                    assert.ok(!this.intermediate);
-                },
-                exec: function () {
-                    assert.ok(!this.intermediate);
-                    done();
-                }
-            };
+        it('execs intermediate states with flag', function () {
+            var h1 = handler();
+            var h2 = handler();
 
             this.router.define(function (route) {
                 route('/').to(h1, function (route) {
@@ -294,6 +278,13 @@ describe('Router', function () {
             });
 
             this.router.navigate('/foo');
+            assert.ok(h1.exec.callCount, 1);
+            assert.ok(h1.exec.thisValues[0].intermediate);
+            assert.ok(h2.exec.callCount, 1);
+            assert.ok(!h2.exec.thisValues[0].intermediate);
+            this.router.navigate('/');
+            assert.ok(h1.exec.callCount, 2);
+            assert.ok(!h1.exec.thisValues[1].intermediate);
         });
     });
 });
