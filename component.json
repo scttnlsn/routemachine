@@ -1,11 +1,10 @@
 {
-    "name": "router",
+    "name": "routemachine",
     "description": "Stateful router",
-    "version": "0.0.0",
+    "version": "0.1.0",
 
     "dependencies": {
         "caolan/async": "*",
-        "component/escape-regexp": "*",
         "jkroso/equals": "*"
     },
 

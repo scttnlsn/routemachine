@@ -1,12 +1,14 @@
-var Router = require('router');
+var ready = require('domready');
+var _ = require('underscore');
+var routemachine = require('../index');
 
-$(function () {
-    var router = Router();
+ready(function () {
+    var router = routemachine();
 
     var templates = {
-        index: _.template($('#index-template').html()),
-        entries: _.template($('#entries-template').html()),
-        entry: _.template($('#entry-template').html())
+        index: _.template(document.getElementById('index-template').innerHTML),
+        entries: _.template(document.getElementById('entries-template').innerHTML),
+        entry: _.template(document.getElementById('entry-template').innerHTML)
     };
 
     var handlers = {
@@ -31,7 +33,7 @@ $(function () {
 
             exec: function () {
                 console.log('Exec:', 'home', this.intermediate);
-                $('#main').html(templates.index());
+                document.getElementById('main').innerHTML = templates.index();
             },
 
             exit: function () {
@@ -70,7 +72,7 @@ $(function () {
 
             exec: function () {
                 console.log('Exec:', 'entrylist', this.intermediate);
-                $('#main').html(templates.entries({ entries: this.entries }));
+                document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
             },
 
             exit: function () {
@@ -86,7 +88,8 @@ $(function () {
 
             exec: function () {
                 console.log('Exec:', 'entry', this.params.id, this.intermediate);
-                $('#main').html(templates.entry({ entry: this.entry }));
+                document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
+
             },
 
             exit: function () {

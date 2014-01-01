@@ -1,6 +1,6 @@
 {
-    "name": "router",
-    "version": "0.0.0",
+    "name": "routemachine",
+    "version": "0.1.0",
 
     "scripts": {
         "test": "./node_modules/.bin/mocha"
@@ -8,12 +8,14 @@
 
     "dependencies": {
         "async": "0.2.9",
-        "equals": "0.3.2",
-        "escape-regexp-component": "1.0.2"
+        "equals": "0.3.2"
     },
 
     "devDependencies": {
+        "browserify": "3.18.0",
+        "domready": "0.2.13",
         "mocha": "1.14.0",
-        "sinon": "1.7.3"
+        "sinon": "1.7.3",
+        "underscore": "1.5.2"
     }
 }
