@@ -17,7 +17,6 @@ $(function () {
 
             exec: function () {
                 console.log('Exec:', 'index', this.intermediate);
-                $('#main').html(templates.index());
             },
 
             exit: function () {
@@ -25,23 +24,57 @@ $(function () {
             }
         },
 
-        entries: {
+        home: {
             enter: function () {
+                console.log('Enter:', 'home');
+            },
+
+            exec: function () {
+                console.log('Exec:', 'home', this.intermediate);
+                $('#main').html(templates.index());
+            },
+
+            exit: function () {
+                console.log('Exit:', 'home');
+            }
+        },
+
+        entries: {
+            enter: function (done) {
                 console.log('Enter:', 'entries');
 
-                this.entries = {
-                    '1': { id: 1, title: 'Foo', body: 'This is entry foo.' },
-                    '2': { id: 2, title: 'Bar', body: 'This is entry bar.' }
-                };
+                // Simulate async request
+                setTimeout(function () {
+                    this.entries = {
+                        '1': { id: 1, title: 'Foo', body: 'This is entry foo.' },
+                        '2': { id: 2, title: 'Bar', body: 'This is entry bar.' }
+                    };
+                    
+                    done();
+                }.bind(this), 1000);
             },
 
             exec: function () {
                 console.log('Exec:', 'entries', this.intermediate);
-                $('#main').html(templates.entries({ entries: this.entries }));
             },
 
             exit: function () {
                 console.log('Exit:', 'entries');
+            }
+        },
+
+        entrylist: {
+            enter: function () {
+                console.log('Enter:', 'entrylist');
+            },
+
+            exec: function () {
+                console.log('Exec:', 'entrylist', this.intermediate);
+                $('#main').html(templates.entries({ entries: this.entries }));
+            },
+
+            exit: function () {
+                console.log('Exit:', 'entrylist');
             }
         },
 
@@ -64,7 +97,10 @@ $(function () {
 
     router.define(function (route) {
         route('/').to(handlers.index, function (route) {
+            route('/').to(handlers.home);
+
             route('/entries').to(handlers.entries, function (route) {
+                route('/').to(handlers.entrylist);
                 route('/:id').to(handlers.entry);
             });
         });
