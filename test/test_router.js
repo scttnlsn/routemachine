@@ -286,6 +286,17 @@ describe('Router', function () {
             assert.ok(h1.exec.callCount, 2);
             assert.ok(!h1.exec.thisValues[1].intermediate);
         });
+
+        it('supports function handlers', function () {
+            var h = sinon.spy();
+
+            this.router.define(function (route) {
+                route('/foo').to(h);
+            });
+
+            this.router.navigate('/foo');
+            assert.ok(h.calledOnce);
+        });
     });
 });
 
