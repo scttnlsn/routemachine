@@ -20,29 +20,34 @@ var router = routemachine();
 
 var foo = {
     enter: function () {
-        // Path is /foo/bar or /foo/baz
+        console.log('enter foo');
     },
 
     exec: function () {
-        // Path is /foo
+        console.log('exec foo');
     }
 };
 
-var bar = function () {
-    // Path is /foo/bar
-};
+var bar = {
+    exec: function () {
+        console.log('exec bar');
+    },
 
-var baz = function () {
-    // Path is /foo/baz
+    exit: function () {
+        console.log('exit bar');
+    }
 };
 
 router.define(function (route) {
     route('/foo').to(foo, function (route) {
         route('/bar').to(bar);
-        route('/baz').to(baz);
     });
 });
 
 router.navigate('/foo/bar');
-router.navigate('/foo/baz');
+// => enter foo
+// => exec bar
+router.navigate('/foo');
+// => exit bar
+// => exec foo
 ```
