@@ -16,12 +16,9 @@
         "url": "git://github.com/scttnlsn/routemachine.git"
     },
 
-    "scripts": {
-        "test": "./node_modules/.bin/mocha"
-    },
-
     "dependencies": {
         "async": "0.2.9",
+        "emitter-component": "1.1.1",
         "equals": "0.3.2"
     },
 
@@ -31,5 +28,9 @@
         "mocha": "1.14.0",
         "sinon": "1.7.3",
         "underscore": "1.5.2"
+    },
+
+    "browser": {
+        "emitter": "emitter-component"
     }
 }
