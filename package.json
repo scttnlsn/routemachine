@@ -1,7 +1,7 @@
 {
     "name": "routemachine",
     "description": "Stateful client-side router",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "homepage": "http://github.com/scttnlsn/routemachine",
     "keywords": ["route", "router", "routing", "statemachine", "state-machine"],
 
