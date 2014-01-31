@@ -1,6 +1,20 @@
 {
     "name": "routemachine",
+    "description": "Stateful client-side router",
     "version": "0.1.0",
+    "homepage": "http://github.com/scttnlsn/routemachine",
+    "keywords": ["route", "router", "routing", "statemachine", "state-machine"],
+
+    "author": {
+        "name": "Scott Nelson",
+        "email": "scott@scttnlsn.com",
+        "web": "http://scttnlsn.com"
+    },
+    
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/scttnlsn/routemachine.git"
+    },
 
     "scripts": {
         "test": "./node_modules/.bin/mocha"
