@@ -5,6 +5,7 @@
 
     "dependencies": {
         "caolan/async": "*",
+        "component/emitter": "*",
         "jkroso/equals": "*"
     },
 

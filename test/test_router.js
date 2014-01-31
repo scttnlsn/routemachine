@@ -100,6 +100,15 @@ describe('Router', function () {
             assert.deepEqual(this.h[1].exec.firstCall.thisValue.params, { bar: '123' });
         });
 
+        it('emits `navigate` event', function (done) {
+            this.router.on('navigate', function (path) {
+                assert.equal(path, '/foo/123');
+                done();
+            });
+
+            this.router.navigate('/foo/123');
+        });
+
         it('calls enter on each handler entered', function () {
             this.router.navigate('/foo/123');
 
