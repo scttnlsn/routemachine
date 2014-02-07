@@ -306,6 +306,23 @@ describe('Router', function () {
             this.router.navigate('/foo');
             assert.ok(h.calledOnce);
         });
+
+        it('can be cancelled', function () {
+            var h = sinon.spy();
+
+            var before = function () {
+                this.cancel();
+            };
+
+            this.router.define(function (route) {
+                route('/').to(before, function (route) {
+                    route('/foo').to(h);
+                });
+            });
+
+            this.router.navigate('/foo');
+            assert.ok(!h.called);
+        });
     });
 });
 

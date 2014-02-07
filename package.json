@@ -32,5 +32,9 @@
 
     "browser": {
         "emitter": "emitter-component"
+    },
+
+    "scripts": {
+        "test": "./node_modules/.bin/mocha"
     }
 }
