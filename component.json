@@ -1,20 +1,20 @@
 {
     "name": "routemachine",
-    "description": "Stateful router",
-    "version": "0.1.0",
+    "description": "Stateful client-side router",
+    "version": "0.1.4",
 
     "dependencies": {
         "caolan/async": "*",
-        "component/emitter": "*",
-        "jkroso/equals": "*"
+        "component/emitter": "*"
     },
 
     "scripts": [
         "index.js",
+        "lib/machine.js",
         "lib/matcher.js",
         "lib/router.js",
-        "lib/segment.js",
-        "lib/state.js"
+        "lib/state.js",
+        "lib/transition.js"
     ],
 
     "main": "index.js"

@@ -17,24 +17,24 @@
     },
 
     "dependencies": {
-        "async": "0.2.9",
+        "async": "0.2.10",
         "emitter-component": "1.1.1",
-        "equals": "0.3.2"
+        "route-component": "0.2.0"
     },
 
     "devDependencies": {
-        "browserify": "3.18.0",
+        "browserify": "3.24.13",
         "domready": "0.2.13",
-        "mocha": "1.14.0",
-        "sinon": "1.7.3",
-        "underscore": "1.5.2"
-    },
-
-    "browser": {
-        "emitter": "emitter-component"
+        "mocha": "1.17.1",
+        "sinon": "1.8.1"
     },
 
     "scripts": {
         "test": "./node_modules/.bin/mocha"
+    },
+
+    "browser": {
+        "emitter": "emitter-component",
+        "route": "route-component"
     }
 }

@@ -1,5 +1,4 @@
 var ready = require('domready');
-var _ = require('underscore');
 var routemachine = require('../index');
 
 ready(function () {
@@ -11,102 +10,95 @@ ready(function () {
         entry: _.template(document.getElementById('entry-template').innerHTML)
     };
 
-    var handlers = {
-        index: {
-            enter: function () {
-                console.log('Enter:', 'index');
-            },
-
-            exec: function () {
-                console.log('Exec:', 'index', this.intermediate);
-            },
-
-            exit: function () {
-                console.log('Exit:', 'index');
-            }
+    router.route(['base'], {
+        enter: function () {
+            console.log('Enter:', 'index');
         },
 
-        home: {
-            enter: function () {
-                console.log('Enter:', 'home');
-            },
-
-            exec: function () {
-                console.log('Exec:', 'home', this.intermediate);
-                document.getElementById('main').innerHTML = templates.index();
-            },
-
-            exit: function () {
-                console.log('Exit:', 'home');
-            }
+        exec: function () {
+            console.log('Exec:', 'index');
         },
 
-        entries: {
-            enter: function (done) {
-                console.log('Enter:', 'entries');
-
-                // Simulate async request
-                setTimeout(function () {
-                    this.entries = {
-                        '1': { id: 1, title: 'Foo', body: 'This is entry foo.' },
-                        '2': { id: 2, title: 'Bar', body: 'This is entry bar.' }
-                    };
-                    
-                    done();
-                }.bind(this), 1000);
-            },
-
-            exec: function () {
-                console.log('Exec:', 'entries', this.intermediate);
-            },
-
-            exit: function () {
-                console.log('Exit:', 'entries');
-            }
-        },
-
-        entrylist: {
-            enter: function () {
-                console.log('Enter:', 'entrylist');
-            },
-
-            exec: function () {
-                console.log('Exec:', 'entrylist', this.intermediate);
-                document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
-            },
-
-            exit: function () {
-                console.log('Exit:', 'entrylist');
-            }
-        },
-
-        entry: {
-            enter: function () {
-                console.log('Enter:', 'entry', this.params.id);
-                this.entry = this.entries[this.params.id];
-            },
-
-            exec: function () {
-                console.log('Exec:', 'entry', this.params.id, this.intermediate);
-                document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
-
-            },
-
-            exit: function () {
-                console.log('Exit:', 'entry', this.params.id);
-            }
+        exit: function () {
+            console.log('Exit:', 'index');
         }
-    };
+    });
 
-    router.define(function (route) {
-        route('/').to(handlers.index, function (route) {
-            route('/').to(handlers.home);
+    router.route(['base', 'home'], {
+        url: '/',
 
-            route('/entries').to(handlers.entries, function (route) {
-                route('/').to(handlers.entrylist);
-                route('/:id').to(handlers.entry);
-            });
-        });
+        enter: function () {
+            console.log('Enter:', 'home');
+        },
+
+        exec: function () {
+            console.log('Exec:', 'home');
+            document.getElementById('main').innerHTML = templates.index();
+        },
+
+        exit: function () {
+            console.log('Exit:', 'home');
+        }
+    });
+
+    router.route(['base', 'entries'], {
+        enter: function (done) {
+            console.log('Enter:', 'entries');
+
+            // Simulate async request
+            setTimeout(function () {
+                this.entries = {
+                    '1': { id: 1, title: 'Foo', body: 'This is entry foo.' },
+                    '2': { id: 2, title: 'Bar', body: 'This is entry bar.' }
+                };
+                
+                done();
+            }.bind(this), 1000);
+        },
+
+        exec: function () {
+            console.log('Exec:', 'entries');
+        },
+
+        exit: function () {
+            console.log('Exit:', 'entries');
+        }
+    });
+
+    router.route(['base', 'entries', 'entrylist'], {
+        url: '/entries',
+
+        enter: function () {
+            console.log('Enter:', 'entrylist');
+        },
+
+        exec: function () {
+            console.log('Exec:', 'entrylist');
+            document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
+        },
+
+        exit: function () {
+            console.log('Exit:', 'entrylist');
+        }
+    });
+
+    router.route(['base', 'entries', 'entry'], {
+        url: '/entries/:id',
+
+        enter: function () {
+            console.log('Enter:', 'entry', this.params.id);
+            this.entry = this.entries[this.params.id];
+        },
+
+        exec: function () {
+            console.log('Exec:', 'entry', this.params.id);
+            document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
+
+        },
+
+        exit: function () {
+            console.log('Exit:', 'entry', this.params.id);
+        }
     });
 
     window.onhashchange = function () {
