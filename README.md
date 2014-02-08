@@ -18,7 +18,9 @@ Component:
 var routemachine = require('routemachine');
 var router = routemachine();
 
-var foo = {
+router.route(['foo'], {
+    url: '/foo',
+
     enter: function () {
         console.log('enter foo');
     },
@@ -26,9 +28,11 @@ var foo = {
     exec: function () {
         console.log('exec foo');
     }
-};
+});
 
-var bar = {
+router.route(['foo', 'bar'], {
+    url: '/foo/bar',
+
     exec: function () {
         console.log('exec bar');
     },
@@ -36,15 +40,9 @@ var bar = {
     exit: function () {
         console.log('exit bar');
     }
-};
-
-router.define(function (route) {
-    route('/foo').to(foo, function (route) {
-        route('/bar').to(bar);
-    });
 });
 
-router.navigate('/foo/bar');
+router.navigate('/bar');
 // => enter foo
 // => exec bar
 router.navigate('/foo');
