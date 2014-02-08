@@ -10,9 +10,9 @@ ready(function () {
         entry: _.template(document.getElementById('entry-template').innerHTML)
     };
 
-    // Manual state addition
+    // Handlers
 
-    router.add(['base'], {
+    var index = {
         enter: function () {
             console.log('Enter:', 'index');
         },
@@ -24,9 +24,9 @@ ready(function () {
         exit: function () {
             console.log('Exit:', 'index');
         }
-    });
+    };
 
-    router.add(['base', 'home'], {
+    var home = {
         url: '/',
 
         enter: function () {
@@ -41,9 +41,9 @@ ready(function () {
         exit: function () {
             console.log('Exit:', 'home');
         }
-    });
+    };
 
-    router.add(['base', 'entries'], {
+    var entries = {
         enter: function (done) {
             console.log('Enter:', 'entries');
 
@@ -65,49 +65,58 @@ ready(function () {
         exit: function () {
             console.log('Exit:', 'entries');
         }
-    });
+    };
 
-    // Tree-link state definition
+    var entrylist = {
+        url: '/entries',
 
-    router.define(['base', 'entries'], {
-        entrylist: {
-            url: '/entries',
+        enter: function () {
+            console.log('Enter:', 'entrylist');
+        },
 
-            enter: function () {
-                console.log('Enter:', 'entrylist');
-            },
+        exec: function () {
+            console.log('Exec:', 'entrylist');
+            document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
+        },
 
-            exec: function () {
-                console.log('Exec:', 'entrylist');
-                document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
-            },
-
-            exit: function () {
-                console.log('Exit:', 'entrylist');
-            },
-
-            children: {
-                entry: {
-                    url: '/entries/:id',
-
-                    enter: function () {
-                        console.log('Enter:', 'entry', this.params.id);
-                        this.entry = this.entries[this.params.id];
-                    },
-
-                    exec: function () {
-                        console.log('Exec:', 'entry', this.params.id);
-                        document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
-
-                    },
-
-                    exit: function () {
-                        console.log('Exit:', 'entry', this.params.id);
-                    }
-                }
-            }
+        exit: function () {
+            console.log('Exit:', 'entrylist');
         }
+    };
+
+    var entry = {
+        url: '/entries/:id',
+
+        enter: function () {
+            console.log('Enter:', 'entry', this.params.id);
+            this.entry = this.entries[this.params.id];
+        },
+
+        exec: function () {
+            console.log('Exec:', 'entry', this.params.id);
+            document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
+
+        },
+
+        exit: function () {
+            console.log('Exit:', 'entry', this.params.id);
+        }
+    };
+
+    // Build tree of states
+
+    router.define(function (root) {
+        root.define('index', index, function (index) {
+            index.define('home', home);
+
+            index.define('entries', entries, function (entries) {
+                entries.define('entrylist', entrylist);
+                entries.define('entry', entry);
+            });
+        });
     });
+
+    // Hash
 
     window.onhashchange = function () {
         router.navigate(path());

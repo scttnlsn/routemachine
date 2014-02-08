@@ -18,32 +18,40 @@ Component:
 var routemachine = require('routemachine');
 var router = routemachine();
 
-router.define({
-    foo: {
-        url: '/foo',
+router.define(function (root) {
+    var foo = root.define('foo', );
 
-        enter: function () {
-            console.log('enter foo');
-        },
+    foo.define('bar', );
+});
 
-        exec: function () {
-            console.log('exec foo');
-        },
+var foo = {
+    url: '/foo',
 
-        children: {
-            bar: {
-                url: '/foo/bar',
+    enter: function () {
+        console.log('enter foo');
+    },
 
-                exec: function () {
-                    console.log('exec bar');
-                },
-
-                exit: function () {
-                    console.log('exit bar');
-                }
-            }
-        }
+    exec: function () {
+        console.log('exec foo');
     }
+};
+
+var bar = {
+    url: '/foo/bar',
+
+    exec: function () {
+        console.log('exec bar');
+    },
+
+    exit: function () {
+        console.log('exit bar');
+    }
+};
+
+router.define(function (root) {
+    root.define('foo', foo, function (foo) {
+        foo.define('bar', bar);
+    });
 });
 
 router.navigate('/bar');
