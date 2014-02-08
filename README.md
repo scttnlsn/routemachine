@@ -18,12 +18,6 @@ Component:
 var routemachine = require('routemachine');
 var router = routemachine();
 
-router.define(function (root) {
-    var foo = root.define('foo', );
-
-    foo.define('bar', );
-});
-
 var foo = {
     url: '/foo',
 
@@ -54,7 +48,7 @@ router.define(function (root) {
     });
 });
 
-router.navigate('/bar');
+router.navigate('/foo/bar');
 // => enter foo
 // => exec bar
 router.navigate('/foo');
