@@ -62,6 +62,29 @@ describe('Router', function () {
             this.router.navigate('/foo');
         });
 
+        it('calls `before` on final state handler', function () {
+            var before = this.handlers['/foo'].before = sinon.spy();
+            var exec = this.handlers['/foo'].exec;
+
+            this.router.navigate('/foo');
+            assert.ok(before.calledOnce);
+            assert.ok(exec.calledOnce);
+            assert.ok(before.calledBefore(exec));
+        });
+
+        it('stops navigation when `before` returns truthy value', function () {
+            this.handlers['/foo'].before = function () {
+                return true;
+            };
+
+            var enter = this.handlers['/foo'].enter;
+            var exec = this.handlers['/foo'].exec;
+
+            this.router.navigate('/foo');
+            assert.ok(!enter.called);
+            assert.ok(!exec.called);
+        });
+
         it('handles async enter', function (done) {
             this.router.add(['a'], {
                 url: '/a',
