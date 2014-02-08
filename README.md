@@ -33,6 +33,10 @@ var foo = {
 var bar = {
     url: '/foo/bar',
 
+    enter: function () {
+        console.log('enter bar');
+    },
+
     exec: function () {
         console.log('exec bar');
     },
@@ -50,6 +54,7 @@ router.define(function (root) {
 
 router.navigate('/foo/bar');
 // => enter foo
+// => enter bar
 // => exec bar
 router.navigate('/foo');
 // => exit bar
