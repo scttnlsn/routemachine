@@ -14,11 +14,11 @@ describe('Router', function () {
             '/quux': handler('/quux')
         };
 
-        this.router.route(['foo'], this.handlers['/foo']);
-        this.router.route(['foo', 'bar'], this.handlers['/foo/bar']);
-        this.router.route(['foo', 'baz'], this.handlers['/foo/baz']);
-        this.router.route(['foo', 'baz', 'qux'], this.handlers['/foo/baz/qux']);
-        this.router.route(['quux'], this.handlers['/quux']);
+        this.router.add(['foo'], this.handlers['/foo']);
+        this.router.add(['foo', 'bar'], this.handlers['/foo/bar']);
+        this.router.add(['foo', 'baz'], this.handlers['/foo/baz']);
+        this.router.add(['foo', 'baz', 'qux'], this.handlers['/foo/baz/qux']);
+        this.router.add(['quux'], this.handlers['/quux']);
     });
 
     describe('#navigate', function () {
@@ -63,7 +63,7 @@ describe('Router', function () {
         });
 
         it('handles async enter', function (done) {
-            this.router.route(['a'], {
+            this.router.add(['a'], {
                 url: '/a',
 
                 enter: function (callback) {
@@ -79,7 +79,7 @@ describe('Router', function () {
         });
 
         it('handles async exit', function (done) {
-            this.router.route(['a'], {
+            this.router.add(['a'], {
                 url: '/a',
                 exec: sinon.spy(),
 
@@ -88,7 +88,7 @@ describe('Router', function () {
                 }
             });
 
-            this.router.route(['b'], {
+            this.router.add(['b'], {
                 url: '/b',
 
                 exec: function () {
@@ -101,7 +101,7 @@ describe('Router', function () {
         });
 
         it('executes handlers in hierarchical context', function () {
-            this.router.route(['a'], {
+            this.router.add(['a'], {
                 url: '/a',
 
                 enter: function () {
@@ -117,7 +117,7 @@ describe('Router', function () {
                 }
             });
 
-            this.router.route(['a', 'b'], {
+            this.router.add(['a', 'b'], {
                 url: '/a/b',
 
                 enter: function () {
@@ -134,7 +134,7 @@ describe('Router', function () {
                 }
             });
 
-            this.router.route(['c'], {
+            this.router.add(['c'], {
                 url: '/c',
                 exec: function () {
                     assert.ok(!this.foo);
@@ -149,7 +149,7 @@ describe('Router', function () {
         it('exits and re-enters state when params change', function () {
             var h = handler('/foo/:bar');
             this.router.reset();
-            this.router.route(['foo'], h);
+            this.router.add(['foo'], h);
 
             this.router.navigate('/foo/123');
             this.router.navigate('/foo/456');

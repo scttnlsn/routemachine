@@ -10,7 +10,7 @@ ready(function () {
         entry: _.template(document.getElementById('entry-template').innerHTML)
     };
 
-    router.route(['base'], {
+    router.add(['base'], {
         enter: function () {
             console.log('Enter:', 'index');
         },
@@ -24,7 +24,7 @@ ready(function () {
         }
     });
 
-    router.route(['base', 'home'], {
+    router.add(['base', 'home'], {
         url: '/',
 
         enter: function () {
@@ -41,7 +41,7 @@ ready(function () {
         }
     });
 
-    router.route(['base', 'entries'], {
+    router.add(['base', 'entries'], {
         enter: function (done) {
             console.log('Enter:', 'entries');
 
@@ -65,7 +65,7 @@ ready(function () {
         }
     });
 
-    router.route(['base', 'entries', 'entrylist'], {
+    router.add(['base', 'entries', 'entrylist'], {
         url: '/entries',
 
         enter: function () {
@@ -82,7 +82,7 @@ ready(function () {
         }
     });
 
-    router.route(['base', 'entries', 'entry'], {
+    router.add(['base', 'entries', 'entry'], {
         url: '/entries/:id',
 
         enter: function () {
