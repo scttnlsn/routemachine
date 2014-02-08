@@ -10,6 +10,8 @@ ready(function () {
         entry: _.template(document.getElementById('entry-template').innerHTML)
     };
 
+    // Manual state addition
+
     router.add(['base'], {
         enter: function () {
             console.log('Enter:', 'index');
@@ -65,39 +67,45 @@ ready(function () {
         }
     });
 
-    router.add(['base', 'entries', 'entrylist'], {
-        url: '/entries',
+    // Tree-link state definition
 
-        enter: function () {
-            console.log('Enter:', 'entrylist');
-        },
+    router.define(['base', 'entries'], {
+        entrylist: {
+            url: '/entries',
 
-        exec: function () {
-            console.log('Exec:', 'entrylist');
-            document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
-        },
+            enter: function () {
+                console.log('Enter:', 'entrylist');
+            },
 
-        exit: function () {
-            console.log('Exit:', 'entrylist');
-        }
-    });
+            exec: function () {
+                console.log('Exec:', 'entrylist');
+                document.getElementById('main').innerHTML = templates.entries({ entries: this.entries });
+            },
 
-    router.add(['base', 'entries', 'entry'], {
-        url: '/entries/:id',
+            exit: function () {
+                console.log('Exit:', 'entrylist');
+            },
 
-        enter: function () {
-            console.log('Enter:', 'entry', this.params.id);
-            this.entry = this.entries[this.params.id];
-        },
+            children: {
+                entry: {
+                    url: '/entries/:id',
 
-        exec: function () {
-            console.log('Exec:', 'entry', this.params.id);
-            document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
+                    enter: function () {
+                        console.log('Enter:', 'entry', this.params.id);
+                        this.entry = this.entries[this.params.id];
+                    },
 
-        },
+                    exec: function () {
+                        console.log('Exec:', 'entry', this.params.id);
+                        document.getElementById('main').innerHTML = templates.entry({ entry: this.entry });
 
-        exit: function () {
-            console.log('Exit:', 'entry', this.params.id);
+                    },
+
+                    exit: function () {
+                        console.log('Exit:', 'entry', this.params.id);
+                    }
+                }
+            }
         }
     });
 
